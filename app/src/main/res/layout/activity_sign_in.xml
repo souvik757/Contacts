@@ -1,28 +1,29 @@
 <!-- login_page.xml -->
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#212121">
-
-    <!-- Logo Image -->
-    <ImageView
-        android:id="@+id/img_logo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/_hatter_"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp" />
+    android:background="#212121"
+    >
 
     <!-- Login Form -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@id/img_logo"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginTop="48dp">
+
+
+        <ImageView
+            android:id="@+id/img_logo"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:src="@drawable/_hatter_"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="48dp" />
 
         <!-- Username Input -->
         <EditText
@@ -34,7 +35,8 @@
             android:textColorHint="#919191"
             android:textColor="#FFFFFF"
             android:padding="12dp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="32dp"/>
 
 
         <!-- password input -->
@@ -42,7 +44,6 @@
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:background="@drawable/general_bg_btn"
             android:hint="Password"
             android:inputType="textPassword"
@@ -67,25 +68,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/general_bg_btn_red"
-            android:text="Login"
             android:textColor="#212121"
             android:textAllCaps="false"
+            android:text="Login"
             android:textSize="20sp"
             android:fontFamily="monospace"
             android:textStyle="bold"
             android:paddingTop="12dp"
             android:paddingBottom="12dp" />
-    </LinearLayout>
 
-    <!-- Sign Up Link -->
-    <TextView
-        android:id="@+id/tv_sign_up"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Don't have an account? Sign up"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal"
-        android:padding="16dp" />
-</RelativeLayout>
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            >
+            <TextView
+                android:id="@+id/tv_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:text="Don't have an account ?"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:layout_gravity="start"
+                android:padding="16dp" />
+            <!-- go to sign up page  -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_signup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SignUp"
+                android:textAllCaps="false"
+                android:backgroundTint="#00FFFFFF"
+                android:textColor="@color/green"/>
+        </androidx.appcompat.widget.Toolbar>
+    </LinearLayout>
+</ScrollView>

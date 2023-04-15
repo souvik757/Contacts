@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#212121"
+    tools:context=".signup">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="16dp">
+        <ImageView
+            android:id="@+id/img_logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/_hatter_"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"/>
+        <EditText
+            android:id="@+id/etFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/general_bg_btn"
+            android:padding="12dp"
+            android:textColorHint="#919191"
+            android:textColor="#FFFFFF"
+            android:hint="First Name"
+            android:inputType="textPersonName"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/etMiddleName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/general_bg_btn"
+            android:padding="12dp"
+            android:textColorHint="#919191"
+            android:textColor="#FFFFFF"
+            android:layout_below="@+id/etFirstName"
+            android:hint="Middle Name"
+            android:inputType="textPersonName"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/etLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/general_bg_btn"
+            android:padding="12dp"
+            android:textColorHint="#919191"
+            android:textColor="#FFFFFF"
+            android:layout_below="@+id/etMiddleName"
+            android:hint="Last Name"
+            android:inputType="textPersonName"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/general_bg_btn"
+            android:padding="12dp"
+            android:textColorHint="#919191"
+            android:textColor="#FFFFFF"
+            android:layout_below="@+id/etLastName"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/etPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/general_bg_btn"
+            android:padding="12dp"
+            android:textColorHint="#919191"
+            android:textColor="#FFFFFF"
+            android:layout_below="@+id/etConfirmPassword"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:layout_marginBottom="16dp"/>
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/general_bg_btn"
+            android:padding="12dp"
+            android:textColorHint="#919191"
+            android:textColor="#FFFFFF"
+            android:layout_below="@+id/etEmail"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/etConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/general_bg_btn"
+            android:padding="12dp"
+            android:textColorHint="#919191"
+            android:textColor="#FFFFFF"
+            android:layout_below="@+id/etPassword"
+            android:hint="Confirm Password"
+            android:inputType="textPassword" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/general_bg_btn_red"
+            android:textColor="#212121"
+            android:padding="12dp"
+            android:layout_below="@+id/etPhoneNumber"
+            android:layout_marginTop="16dp"
+            android:text="Sign Up" />
+
+    </LinearLayout>
+
+
+
+
+
+
+</ScrollView>
