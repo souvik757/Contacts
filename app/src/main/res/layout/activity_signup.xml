@@ -97,7 +97,17 @@
             android:layout_below="@+id/etEmail"
             android:hint="Password"
             android:inputType="textPassword"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="0dp"/>
+        <!-- hide & peek toggle button for p/w  -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/toggle_pw_sign_up"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/hide" />
 
         <EditText
             android:id="@+id/etConfirmPassword"
@@ -124,10 +134,4 @@
             android:text="Sign Up" />
 
     </LinearLayout>
-
-
-
-
-
-
 </ScrollView>

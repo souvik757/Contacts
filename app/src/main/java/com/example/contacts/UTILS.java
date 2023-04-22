@@ -78,4 +78,32 @@ public class UTILS {
 
         return HasLowerCase && HasUpperCase && HasNumeric && HasSpecial ;
     }
+    public boolean nameValidator(String FN , String MN , String LN) {
+        if (FN.length() == 0 || LN.length() <= 1) return false ;
+        if (FN.length() != 1) {
+            if (Character.isUpperCase(FN.charAt(FN.length() - 1)) || Character.isUpperCase(LN.charAt(LN.length() - 1)))
+                return false;
+            if ( Character.isLowerCase(FN.charAt(0)) || Character.isLowerCase(LN.charAt(0)) )
+                return false ;
+        }
+        else
+        {
+            if ( Character.isLowerCase(FN.charAt(0)) || Character.isLowerCase(LN.charAt(0)) )
+                return false ;
+        }
+        return true ;
+    }
+    public boolean phoneValidator(String PH) {
+        if (PH.length() != 10) return false ;
+        for (int i = 0 ; i < PH.length() ; i++) {
+            if (!Character.isDigit(PH.charAt(i)))
+                return false ;
+        }
+        return true ;
+    }
+    public boolean passwordConfirmation(String pw , String cpw) {
+        if (pw.length() != cpw.length()) return false ;
+        return pw.equals(cpw) ;
+    }
+
 }
