@@ -27,11 +27,11 @@
 
         <!-- Username Input -->
         <EditText
-            android:id="@+id/et_username"
+            android:id="@+id/et_userid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/general_bg_btn"
-            android:hint="Username"
+            android:hint="User id / Email"
             android:textColorHint="#919191"
             android:textColor="#FFFFFF"
             android:padding="12dp"

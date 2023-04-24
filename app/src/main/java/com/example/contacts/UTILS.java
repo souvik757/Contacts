@@ -105,5 +105,10 @@ public class UTILS {
         if (pw.length() != cpw.length()) return false ;
         return pw.equals(cpw) ;
     }
+    public String ParseName(String FN,String MN,String LN) {
+        if (MN.length() == 0)
+            return FN+" "+LN ;
+        return FN+" "+MN+" "+LN ;
+    }
 
 }

@@ -7,19 +7,22 @@
     tools:context=".MainActivity">
 
     <!-- Add your splash screen image or animation here -->
+
+    <!-- Optionally, you can add a logo or app name overlay on top of the splash screen -->
+
     <ImageView
         android:id="@+id/splashImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/preview"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/preview" />
 
-    <!-- Optionally, you can add a logo or app name overlay on top of the splash screen -->
     <ImageView
         android:id="@+id/logoImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="117dp"
+        android:layout_height="87dp"
         android:layout_centerInParent="true"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:src="@drawable/loading" />
 
 </RelativeLayout>

@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 public class SignIn extends AppCompatActivity {
-    private EditText usernameEditText     ;
+    private EditText useridEditText;
     private EditText passwordEditText     ;
     private Button showHidePasswordButton ;
     private Button savedetailsButton      ;
@@ -30,7 +30,7 @@ public class SignIn extends AppCompatActivity {
 
     //                                               Widget Initializer   :::
     private void initialize_widgets(){
-        usernameEditText       = findViewById( R.id.et_username) ;
+        useridEditText = findViewById( R.id.et_userid) ;
         passwordEditText       = findViewById( R.id.et_password) ;
         showHidePasswordButton = findViewById( R.id.toggle_pw)   ;
         savedetailsButton      = findViewById( R.id.btn_login)   ;
@@ -69,6 +69,7 @@ public class SignIn extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext() , signup.class) ;
                 startActivity(i);
+                finish() ;
             }
         });
     }

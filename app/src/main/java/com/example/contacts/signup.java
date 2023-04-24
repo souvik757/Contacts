@@ -3,12 +3,16 @@ package com.example.contacts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,6 +35,8 @@ public class signup extends AppCompatActivity {
     //                             ::: BUTTON :::
     private Button BTNSIGNUP ;
     private Button TOGGLEPW  ;
+    //
+    private ImageView load   ;
 
     //                                                  Firebase instances :::
     private FirebaseFirestore _ReferenceDB_ = FirebaseFirestore.getInstance() ;
@@ -68,6 +74,7 @@ public class signup extends AppCompatActivity {
         FinalPassword = findViewById( R.id.etConfirmPassword ) ;
         BTNSIGNUP     = findViewById( R.id.btnSignUp         ) ;
         TOGGLEPW      = findViewById( R.id.toggle_pw_sign_up ) ;
+        load          = findViewById( R.id.loading           ) ;
     }
     //                                           Event Listener for Buttons :::
     private void ButtonOnClickListener() {
@@ -100,13 +107,13 @@ public class signup extends AppCompatActivity {
                 String PASS  = Password.getText().toString().trim()      ;
                 String CPASS = FinalPassword.getText().toString().trim() ;
                 if (!object.nameValidator(FNAME,MNAME,LNAME))
-                    Snackbar.make(v,"Invalid Names",Snackbar.LENGTH_LONG).show() ;
+                    message(v,"Invalid Name ! ");
                 else if(!object.phoneValidator(PH))
-                    Snackbar.make(v,"Invalid Phone Number !" , Snackbar.LENGTH_LONG).show() ;
+                    message(v,"Invalid Phone Number !");
                 else if(!object.passwordValidator(PASS))
-                    Snackbar.make(v,"Invalid Password !" , Snackbar.LENGTH_LONG).show() ;
+                    message(v,"Invalid Password !");
                 else if(!object.passwordConfirmation(PASS,CPASS))
-                    Snackbar.make(v,"Passwords are not matching !",Snackbar.LENGTH_LONG).show() ;
+                    message(v,"Passwords are not matching !");
                 else {
                     IncreaseUserCount(count) ;
                     SAVETOFIREBASE(v) ;
@@ -132,12 +139,26 @@ public class signup extends AppCompatActivity {
         data.put(PASS_KEY,PASS)    ;
         // increase count and concatenate it with USER :::
         child = child + String.valueOf(count) ;
+        // Unique UserID :::
+        String UserID = child ;
         _ReferenceDB_.collection("BASICPLANUSER").document(child)
                 .set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
+                        load.setVisibility(View.VISIBLE) ;
+                        load.setAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotation));
                         Snackbar.make(view , "Successfully signed up !" , Snackbar.LENGTH_LONG).show() ;
+                        Intent profiler = new Intent(getApplicationContext() , profiler.class) ;
+                        profiler.putExtra("USERID"       , UserID) ;
+                        profiler.putExtra("USERNAME"     , object.ParseName(FNAME,MNAME,LNAME)) ;
+                        profiler.putExtra("USERMAIL"     , EMAIL) ;
+                        profiler.putExtra("USERPH"       , PH)    ;
+                        profiler.putExtra("USERPASSWORD" , PASS)  ;
+                        new Handler().postDelayed(()->{
+                            startActivity(profiler) ;
+                            finish() ;
+                        }, 1400) ;
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -163,5 +184,8 @@ public class signup extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish() ;
+    }
+    private void message(View view,String message) {
+        Snackbar.make(view , message,Snackbar.LENGTH_LONG).show() ;
     }
 }
