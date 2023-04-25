@@ -1,5 +1,9 @@
 package com.example.contacts;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 public class UTILS {
     public boolean usernameValidator(String username){
         // 1 . Shouldn't start with Caps .
@@ -109,6 +113,20 @@ public class UTILS {
         if (MN.length() == 0)
             return FN+" "+LN ;
         return FN+" "+MN+" "+LN ;
+    }
+    public boolean IsConnected(Context context){
+        ConnectivityManager CM = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE) ;
+        NetworkInfo activeNetwork = CM.getActiveNetworkInfo() ;
+        boolean HasConnection = activeNetwork != null && activeNetwork.isConnectedOrConnecting() ;
+        return HasConnection ;
+    }
+    public boolean internetIsConnected() {
+        try {
+            String command = "ping -c 1 google.com";
+            return (Runtime.getRuntime().exec(command).waitFor() == 0);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }

@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,19 +45,14 @@ public class signup extends AppCompatActivity {
     private String child = "USER" ;
     //                                                  Document counter (serial number that will concatenate with USER for better DB management) :::
     private int count ;
-    //                                                  Declaring Keys to values of document in FireStore :::
-    private static final String NAME01_KEY = "FirstName"  ;
-    private static final String NAME02_KEY = "MiddleName" ;
-    private static final String NAME03_KEY = "LastName"   ;
-    private static final String  EMAIL_KEY = "Email"      ;
-    private static final String     PH_KEY = "Phone"      ;
-    private static final String   PASS_KEY = "Password"   ;
+    private KEYS key = new KEYS() ;
     //                                                  UTILS class instance ::
     private UTILS object = new UTILS() ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
 
         InitializeWidgets()     ;
         SaveUserCount()         ;
@@ -99,24 +95,32 @@ public class signup extends AppCompatActivity {
         BTNSIGNUP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String FNAME = FirstName.getText().toString().trim()     ;
-                String MNAME = MiddleName.getText().toString().trim()    ;
-                String LNAME = LastName.getText().toString().trim()      ;
-              //String EMAIL = Email.getText().toString().trim()         ;
-                String PH    = PhoneNumber.getText().toString().trim()   ;
-                String PASS  = Password.getText().toString().trim()      ;
-                String CPASS = FinalPassword.getText().toString().trim() ;
-                if (!object.nameValidator(FNAME,MNAME,LNAME))
-                    message(v,"Invalid Name ! ");
-                else if(!object.phoneValidator(PH))
-                    message(v,"Invalid Phone Number !");
-                else if(!object.passwordValidator(PASS))
-                    message(v,"Invalid Password !");
-                else if(!object.passwordConfirmation(PASS,CPASS))
-                    message(v,"Passwords are not matching !");
-                else {
-                    IncreaseUserCount(count) ;
-                    SAVETOFIREBASE(v) ;
+                if (object.IsConnected(getApplicationContext()) && object.internetIsConnected()) {
+                    String FNAME = FirstName.getText().toString().trim();
+                    String MNAME = MiddleName.getText().toString().trim();
+                    String LNAME = LastName.getText().toString().trim();
+                    //String EMAIL = Email.getText().toString().trim()         ;
+                    String PH = PhoneNumber.getText().toString().trim();
+                    String PASS = Password.getText().toString().trim();
+                    String CPASS = FinalPassword.getText().toString().trim();
+                    if (!object.nameValidator(FNAME, MNAME, LNAME))
+                        message(v, "Invalid Name ! ");
+                    else if (!object.phoneValidator(PH))
+                        message(v, "Invalid Phone Number !");
+                    else if (!object.passwordValidator(PASS))
+                        message(v, "Invalid Password !");
+                    else if (!object.passwordConfirmation(PASS, CPASS))
+                        message(v, "Passwords are not matching !");
+                    else {
+                        IncreaseUserCount(count);
+                        SAVETOFIREBASE(v);
+                    }
+                }
+                else{
+                    new Handler().postDelayed(() -> {
+                        startActivity(new Intent(getApplicationContext() , NoConnectivity.class));
+                        finish() ;
+                    }, 1400) ;
                 }
             }
         });
@@ -131,16 +135,14 @@ public class signup extends AppCompatActivity {
         String PASS  = Password.getText().toString().trim()      ;
         // Map to store data's corresponding with KEY"s of username & password ->
         Map<String , Object> data = new HashMap<>() ;
-        data.put(NAME01_KEY,FNAME) ;
-        data.put(NAME02_KEY,MNAME) ;
-        data.put(NAME03_KEY,LNAME) ;
-        data.put(EMAIL_KEY,EMAIL)  ;
-        data.put(PH_KEY,PH)        ;
-        data.put(PASS_KEY,PASS)    ;
+        data.put(key.NAME01_KEY,FNAME) ;
+        data.put(key.NAME02_KEY,MNAME) ;
+        data.put(key.NAME03_KEY,LNAME) ;
+        data.put(key.EMAIL_KEY,EMAIL)  ;
+        data.put(key.PH_KEY,PH)        ;
+        data.put(key.PASS_KEY,PASS)    ;
         // increase count and concatenate it with USER :::
         child = child + String.valueOf(count) ;
-        // Unique UserID :::
-        String UserID = child ;
         _ReferenceDB_.collection("BASICPLANUSER").document(child)
                 .set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -149,14 +151,7 @@ public class signup extends AppCompatActivity {
                         load.setVisibility(View.VISIBLE) ;
                         load.setAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotation));
                         Snackbar.make(view , "Successfully signed up !" , Snackbar.LENGTH_LONG).show() ;
-                        Intent profiler = new Intent(getApplicationContext() , profiler.class) ;
-                        profiler.putExtra("USERID"       , UserID) ;
-                        profiler.putExtra("USERNAME"     , object.ParseName(FNAME,MNAME,LNAME)) ;
-                        profiler.putExtra("USERMAIL"     , EMAIL) ;
-                        profiler.putExtra("USERPH"       , PH)    ;
-                        profiler.putExtra("USERPASSWORD" , PASS)  ;
                         new Handler().postDelayed(()->{
-                            startActivity(profiler) ;
                             finish() ;
                         }, 1400) ;
                     }
@@ -185,7 +180,17 @@ public class signup extends AppCompatActivity {
     public void onBackPressed() {
         finish() ;
     }
-    private void message(View view,String message) {
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!object.IsConnected(getApplicationContext()) || !object.internetIsConnected()) {
+            Toast.makeText(this, "No internet", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+
+    private void message(View view, String message) {
         Snackbar.make(view , message,Snackbar.LENGTH_LONG).show() ;
     }
 }
