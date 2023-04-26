@@ -3,6 +3,9 @@ package com.example.contacts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -90,16 +93,30 @@ public class profiler extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                message(v,"come back later 👀 ") ;
+                message(v,"clicked");
             }
         });
     }
-    @Override
-    public void onBackPressed() {
-        finish() ;
-
-    }
     private void message(View view , String s){
         Snackbar.make(view,s,Snackbar.LENGTH_LONG).show() ;
+    }
+    public void AlertBox(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("Do you want to exit ?");
+        builder.setTitle("Alert !");
+        builder.setCancelable(true);
+        builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
+            finish() ;
+        });
+        builder.setNegativeButton("No", (DialogInterface.OnClickListener) (dialog, which) -> {
+            dialog.cancel();
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    @Override
+    public void onBackPressed() {
+        AlertBox(profiler.this) ;
+
     }
 }

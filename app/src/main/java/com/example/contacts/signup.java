@@ -38,7 +38,7 @@ public class signup extends AppCompatActivity {
     private Button TOGGLEPW  ;
     //
     private ImageView load   ;
-
+    private EmailValidator emailValidator = new EmailValidator() ;
     //                                                  Firebase instances :::
     private FirebaseFirestore _ReferenceDB_ = FirebaseFirestore.getInstance() ;
     //                                                  Document reference name in FireStore Database :::
@@ -99,12 +99,14 @@ public class signup extends AppCompatActivity {
                     String FNAME = FirstName.getText().toString().trim();
                     String MNAME = MiddleName.getText().toString().trim();
                     String LNAME = LastName.getText().toString().trim();
-                    //String EMAIL = Email.getText().toString().trim()         ;
+                    String EMAIL = Email.getText().toString().trim()         ;
                     String PH = PhoneNumber.getText().toString().trim();
                     String PASS = Password.getText().toString().trim();
                     String CPASS = FinalPassword.getText().toString().trim();
                     if (!object.nameValidator(FNAME, MNAME, LNAME))
                         message(v, "Invalid Name ! ");
+                    else if(!emailValidator.validate(EMAIL))
+                        message(v , "Invalid Email address !");
                     else if (!object.phoneValidator(PH))
                         message(v, "Invalid Phone Number !");
                     else if (!object.passwordValidator(PASS))

@@ -1,6 +1,8 @@
 package com.example.contacts ;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -23,7 +25,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignIn extends AppCompatActivity {
-    private EditText useridEditText;
+    private EditText useridEditText       ;
     private EditText passwordEditText     ;
     private Button showHidePasswordButton ;
     private Button savedetailsButton      ;
@@ -76,7 +78,10 @@ public class SignIn extends AppCompatActivity {
             public void onClick(View v) {
                 if (object.internetIsConnected() && object.IsConnected(getApplicationContext())) {
                     String UserId = useridEditText.getText().toString().trim() ;
-                    FetchDataFromDb(UserId) ;
+                    if (UserId.length() == 0)
+                        message(v,"Enter UserID"+"\nand password");
+                    else
+                        FetchDataFromDb(UserId) ;
                 }
                 else{
                     new Handler().postDelayed(() -> {
@@ -138,5 +143,27 @@ public class SignIn extends AppCompatActivity {
             Toast.makeText(this, "No internet", Toast.LENGTH_SHORT).show();
             finish();
         }
+    }
+    // Declare the onBackPressed method when the back button is pressed this method will call
+    public void AlertBox(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("Do you want to exit ?");
+        builder.setTitle("Alert !");
+        builder.setCancelable(true);
+        builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
+            finish() ;
+        });
+        builder.setNegativeButton("No", (DialogInterface.OnClickListener) (dialog, which) -> {
+            dialog.cancel();
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    @Override
+    public void onBackPressed() {
+        AlertBox(SignIn.this) ;
+    }
+    private void message(View view, String message) {
+        Snackbar.make(view , message,Snackbar.LENGTH_LONG).show() ;
     }
 }

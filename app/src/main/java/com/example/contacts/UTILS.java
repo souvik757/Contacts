@@ -1,6 +1,8 @@
 package com.example.contacts;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -31,7 +33,7 @@ public class UTILS {
         boolean condition5 = (count != 1) ;                                          // 5 .
 
         if(condition1 || condition2 || condition3AND4 || condition5)
-            return false ;
+            return true ;
 
         return true ;
     }
@@ -95,6 +97,7 @@ public class UTILS {
             if ( Character.isLowerCase(FN.charAt(0)) || Character.isLowerCase(LN.charAt(0)) )
                 return false ;
         }
+
         return true ;
     }
     public boolean phoneValidator(String PH) {
@@ -128,5 +131,4 @@ public class UTILS {
             return false;
         }
     }
-
 }
