@@ -1,12 +1,19 @@
-package com.example.contacts;
+package com.example.contacts.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.SmsManager;
 import android.text.InputType;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -15,15 +22,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.contacts.EmailValidator;
+import com.example.contacts.KEYS;
+import com.example.contacts.R;
+import com.example.contacts.UTILS;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class signup extends AppCompatActivity {
+public class Signup extends AppCompatActivity {
     // Declaring Widgets :::
     //                             ::: EDITTEXT :::
     private EditText FirstName     ;
@@ -42,7 +54,7 @@ public class signup extends AppCompatActivity {
     //                                                  Firebase instances :::
     private FirebaseFirestore _ReferenceDB_ = FirebaseFirestore.getInstance() ;
     //                                                  Document reference name in FireStore Database :::
-    private String child = "USER" ;
+    private String child ;
     //                                                  Document counter (serial number that will concatenate with USER for better DB management) :::
     private int count ;
     private KEYS key = new KEYS() ;
@@ -53,9 +65,9 @@ public class signup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-
         InitializeWidgets()     ;
-        SaveUserCount()         ;
+        child = object.rand_generatedSTR() ;
+        count = object.rand_generatedINT() ;
         ButtonOnClickListener() ;
 
     }
@@ -104,17 +116,16 @@ public class signup extends AppCompatActivity {
                     String PASS = Password.getText().toString().trim();
                     String CPASS = FinalPassword.getText().toString().trim();
                     if (!object.nameValidator(FNAME, MNAME, LNAME))
-                        message(v, "Invalid Name ! ");
+                        AlertBox(Signup.this , "Invalid name !" , object.constraintsUSERNAME());
                     else if(!emailValidator.validate(EMAIL))
                         message(v , "Invalid Email address !");
                     else if (!object.phoneValidator(PH))
                         message(v, "Invalid Phone Number !");
                     else if (!object.passwordValidator(PASS))
-                        message(v, "Invalid Password !");
+                        AlertBox(Signup.this , "Invalid Password !" , object.constraintsPASSWORD());
                     else if (!object.passwordConfirmation(PASS, CPASS))
                         message(v, "Passwords are not matching !");
                     else {
-                        IncreaseUserCount(count);
                         SAVETOFIREBASE(v);
                     }
                 }
@@ -152,6 +163,14 @@ public class signup extends AppCompatActivity {
                     public void onSuccess(Void unused) {
                         load.setVisibility(View.VISIBLE) ;
                         load.setAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotation));
+                        // Grant permission for SMS ::
+                        if (ContextCompat.checkSelfPermission(Signup.this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+                            // Permission is granted, so send the SMS message
+                            sendSMS(PH, child+object.bold());
+                        } else {
+                            // Permission is not granted, so request it
+                            ActivityCompat.requestPermissions(Signup.this, new String[] { Manifest.permission.SEND_SMS }, PERMISSION_REQUEST_CODE);
+                        }
                         Snackbar.make(view , "Successfully signed up !" , Snackbar.LENGTH_LONG).show() ;
                         new Handler().postDelayed(()->{
                             finish() ;
@@ -164,19 +183,6 @@ public class signup extends AppCompatActivity {
                         Snackbar.make(view , "That didn't work !" , Snackbar.LENGTH_LONG).show() ;
                     }
                 }) ;
-    }
-    //                                           Shared Preferences usage            :::
-    //                                           Functioning Serial Count of entries to database :::
-    private void IncreaseUserCount(int x){
-        SharedPreferences shared = getSharedPreferences("LastCount" ,MODE_PRIVATE) ;
-        SharedPreferences.Editor editor = shared.edit() ;
-        editor.putInt("KEY" , x+1) ;
-        editor.commit() ;
-    }
-    //                                           Restoring last increased Count on triggering onCreate() method :::
-    private void SaveUserCount(){
-        SharedPreferences shared = getSharedPreferences("LastCount" ,MODE_PRIVATE) ;
-        count = shared.getInt("KEY" , 1);
     }
     @Override
     public void onBackPressed() {
@@ -194,5 +200,49 @@ public class signup extends AppCompatActivity {
 
     private void message(View view, String message) {
         Snackbar.make(view , message,Snackbar.LENGTH_LONG).show() ;
+    }
+    public void AlertBox(Context context , String alert , String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(message);
+        builder.setTitle(alert);
+        builder.setCancelable(true);
+        builder.setNegativeButton("ok", (DialogInterface.OnClickListener) (dialog, which) -> {
+            dialog.cancel();
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    private static final int PERMISSION_REQUEST_CODE = 1;
+
+    private void sendSMS(String phoneNumber, String message) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+            // Permission is granted, so send the SMS message
+            try {
+                SmsManager smsManager = SmsManager.getDefault();
+                ArrayList<String> messageParts = smsManager.divideMessage(message);
+                smsManager.sendMultipartTextMessage(phoneNumber, null, messageParts, null, null);
+                Toast.makeText(getApplicationContext(), "SMS sent to " + phoneNumber, Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "SMS failed to send", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        } else {
+            // Permission is not granted, so request it
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.SEND_SMS }, PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission is granted, so send the SMS message
+                sendSMS("7063721378", "working uhooo!!");
+            } else {
+                // Permission is not granted, so show an error message
+                Toast.makeText(getApplicationContext(), "SMS permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

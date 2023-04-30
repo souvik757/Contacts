@@ -1,10 +1,10 @@
 package com.example.contacts;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
+import java.util.Random;
 
 public class UTILS {
     public boolean usernameValidator(String username){
@@ -13,13 +13,13 @@ public class UTILS {
         // 3 . Min Length -> 3
         // 4 . Max Length -> 30
         // 5 . Special char count -> 1
-        boolean condition1  = Character.isUpperCase(username.charAt(0)) ;             // 1 .
+        boolean condition1  = Character.isUpperCase(username.charAt(0)) ; // 1 .
         boolean condition2  =
                 (username.charAt(0) == '!' || username.charAt(0) == '@' ||
                         username.charAt(0) == '#' || username.charAt(0) == '$' ||
                         username.charAt(0) == '%' || username.charAt(0) == '^' ||
                         username.charAt(0) == '&' || username.charAt(0) == '*' ||
-                        username.charAt(0) == '_')  ;                                        // 2 .
+                        username.charAt(0) == '_')  ;// 2 .
         boolean condition3AND4 = (username.length() < 3 || username.length() > 30) ; // 3 , 4 .
         int count = 0 ;
         for(int i = 0 ; i < username.length() ; i++){
@@ -30,7 +30,7 @@ public class UTILS {
                     username.charAt(i) == '_')
                 count++ ;
         }
-        boolean condition5 = (count != 1) ;                                          // 5 .
+        boolean condition5 = (count != 1)  ;// 5 .
 
         if(condition1 || condition2 || condition3AND4 || condition5)
             return true ;
@@ -130,5 +130,33 @@ public class UTILS {
         } catch (Exception e) {
             return false;
         }
+    }
+    public int rand_generatedINT() {
+        Random random = new Random();
+        return random.nextInt(90000) + 10000;
+    }
+    public String rand_generatedSTR() {
+        String[] adjectives = {"fierce", "bold", "daring", "sleek", "edgy", "mystic", "vibrant", "groovy", "zen", "fiery", "sparkling", "electric", "dazzling", "spectacular", "brilliant", "radiant", "glowing", "mesmerizing", "hypnotic", "enchanting"};
+        String[] nouns = {"tiger", "hawk", "panther", "viper", "jaguar", "lion", "shark", "raven", "dragon", "phoenix", "falcon", "gazelle", "cheetah", "puma", "cobra", "wolf", "bear", "fox", "lynx", "leopard"};
+        Random random = new Random();
+        int adjIndex = random.nextInt(adjectives.length);
+        int nounIndex = random.nextInt(nouns.length);
+        return adjectives[adjIndex] + "_" + nouns[nounIndex];
+    }
+    public String constraintsUSERNAME() {
+        return   "1. Minimum length for First Name : 1 "+
+                "\n2. Maximum length : 30"+
+                "\n3. Shouldn't start with Caps"+
+                "\n4. Shouldn't exist with special char's" ;
+    }
+    public String constraintsPASSWORD() {
+        return   "1. Minimum length : 8 "+
+                "\n2. Maximum length : 30"+
+                "\n3. At least   :  1  lowercase 'a' to 'z'"+
+                "\n4. At least   :  1  uppercase 'A' to 'Z'"+
+                "\n5. At least   :  1  special character";
+    }
+    public String bold() {
+        return "\n\nUse this as your userID";
     }
 }

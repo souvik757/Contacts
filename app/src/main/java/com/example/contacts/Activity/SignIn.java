@@ -1,11 +1,9 @@
-package com.example.contacts ;
+package com.example.contacts.Activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
@@ -17,6 +15,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.contacts.KEYS;
+import com.example.contacts.R;
+import com.example.contacts.UTILS;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -96,8 +97,7 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (object.IsConnected(getApplicationContext()) && object.internetIsConnected()) {
-                    Intent signup = new Intent(getApplicationContext(), signup.class);
-                    startActivity(signup);
+                    startActivity(new Intent(getApplicationContext(), Signup.class));
                 }
                 else {
                     new Handler().postDelayed(() -> {
@@ -133,7 +133,7 @@ public class SignIn extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(SignIn.this, "That didn't work", Toast.LENGTH_SHORT).show();;
+                Toast.makeText(SignIn.this, "That didn't work", Toast.LENGTH_SHORT).show() ;
             }
         }) ;
     }

@@ -1,4 +1,4 @@
-package com.example.contacts;
+package com.example.contacts.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.contacts.KEYS;
+import com.example.contacts.R;
+import com.example.contacts.UTILS;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -106,7 +109,7 @@ public class profiler extends AppCompatActivity {
         builder.setTitle("Alert !");
         builder.setCancelable(true);
         builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
-            finish() ;
+            finish();
         });
         builder.setNegativeButton("No", (DialogInterface.OnClickListener) (dialog, which) -> {
             dialog.cancel();
@@ -114,9 +117,9 @@ public class profiler extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
     @Override
     public void onBackPressed() {
         AlertBox(profiler.this) ;
-
     }
 }

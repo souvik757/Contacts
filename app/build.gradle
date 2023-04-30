@@ -28,9 +28,14 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+android {
+    packagingOptions {
+        pickFirst 'META-INF/LICENSE.txt' // picks the JavaMail license file
+    }
+}
 
 dependencies {
-
+    implementation fileTree(dir: 'libs', includes: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
