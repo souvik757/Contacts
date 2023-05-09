@@ -79,7 +79,7 @@ public class profiler extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(profiler.this, "That didn't work", Toast.LENGTH_SHORT).show();;
+                Toast.makeText(profiler.this, "That didn't work", Toast.LENGTH_SHORT).show() ;
             }
         }) ;
     }
@@ -96,7 +96,9 @@ public class profiler extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                message(v,"clicked");
+                Intent edit = new Intent(profiler.this , Edit.class) ;
+                edit.putExtra("USERIDTOEDIT" , user_id.getText().toString().trim()) ;
+                startActivity(edit);
             }
         });
     }

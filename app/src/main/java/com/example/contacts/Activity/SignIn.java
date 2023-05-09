@@ -25,6 +25,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SignIn extends AppCompatActivity {
     private EditText useridEditText       ;
     private EditText passwordEditText     ;
@@ -36,12 +39,16 @@ public class SignIn extends AppCompatActivity {
     private DocumentReference UserReference ;
     private UTILS object = new UTILS() ; // UTILS class consists of validator methods of Inputs :::
     private KEYS keys = new KEYS() ;
+    // UserID :::
+    private String _UserID_ = "USER1" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState) ;
         setContentView(R.layout.activity_sign_in);
         initialize_widgets();
+        //FetchLastUserID() ;
+        //FetchDataFromDb(_UserID_ , true);
         OnClickListenerForButtons();
     }
 
@@ -118,16 +125,19 @@ public class SignIn extends AppCompatActivity {
                     String PASSWORD = passwordEditText.getText().toString().trim() ;
                     if (!password.equals(PASSWORD))
                         Toast.makeText(SignIn.this, "password doesn't match", Toast.LENGTH_SHORT).show();
-                    else
-                    {
-                        Intent i = new Intent(getApplicationContext() , profiler.class) ;
-                        i.putExtra("USERID" , userID) ;
-                        startActivity(i) ;
-                        finish() ;
+                    else {
+                        Intent i = new Intent(getApplicationContext(), profiler.class);
+                        i.putExtra("USERID", userID);
+                        SaveUserId(userID);
+                        startActivity(i);
+                        finish();
                     }
                 }
                 else {
                     Toast.makeText(SignIn.this, "User ID doesn't exist", Toast.LENGTH_SHORT).show() ;
+                    new Handler().postDelayed(()->{
+                        Toast.makeText(SignIn.this, "If not signed in"+"\nplease sign up !", Toast.LENGTH_SHORT).show();;
+                    } , 1000) ;
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -165,5 +175,23 @@ public class SignIn extends AppCompatActivity {
     }
     private void message(View view, String message) {
         Snackbar.make(view , message,Snackbar.LENGTH_LONG).show() ;
+    }
+    private void SaveUserId(String x){
+        Map<String , Object> data = new HashMap<>() ;
+        data.put("UserID",x) ;
+        DB.collection("LastSavedUserID").document("LAST_USER_ID")
+                .set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        new Handler().postDelayed(()->{
+                            finish() ;
+                        }, 1400) ;
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                }) ;
     }
 }

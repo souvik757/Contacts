@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#333"
@@ -17,11 +18,10 @@
         android:layout_marginBottom="20dp">
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_gravity="start"
-            android:background="@drawable/baseline_person_pin_circle_24"
-            android:backgroundTint="@color/white" />
+            android:background="@drawable/round_user"/>
 
         <TextView
             android:id="@+id/DBUserName"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/baloo_thambi"
             android:textColor="@color/yellow"
-            android:textSize="35dp" />
+            android:textSize="25dp" />
 
     </androidx.appcompat.widget.Toolbar>
 
