@@ -18,6 +18,7 @@
             android:background="@drawable/round_user"
             />
         <TextView
+            android:id="@+id/DBUserID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
@@ -90,6 +91,7 @@
             android:layout_gravity="center">
 
             <androidx.appcompat.widget.AppCompatButton
+                android:onClick="DeleteButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
@@ -99,6 +101,7 @@
                 android:textColor="@color/white" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:onClick="OnEditButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
