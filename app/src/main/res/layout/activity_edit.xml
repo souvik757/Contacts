@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
+            android:id="@+id/ProfileImageView"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="start"
@@ -23,37 +24,36 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="25dp"
-            android:text="USER_ICON99999"
              />
     </androidx.appcompat.widget.Toolbar>
         <EditText
             android:id="@+id/FirstName"
-            android:text="Souvik"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:background="@drawable/general_bg_btn_black"
             android:padding="12dp"
             android:textColor="@color/black"
+            android:textColorHint="@color/ash"
             android:textSize="20dp" />
         <EditText
             android:id="@+id/MiddleName"
-            android:text=""
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:background="@drawable/general_bg_btn_black"
             android:padding="12dp"
+            android:textColorHint="@color/ash"
             android:textColor="@color/black"
             android:textSize="20dp" />
         <EditText
             android:id="@+id/LastName"
-            android:text="Maity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:background="@drawable/general_bg_btn_black"
             android:padding="12dp"
+            android:textColorHint="@color/ash"
             android:textColor="@color/black"
             android:textSize="20dp" />
         <EditText
@@ -63,6 +63,7 @@
             android:layout_margin="20dp"
             android:background="@drawable/general_bg_btn_black"
             android:padding="12dp"
+            android:textColorHint="@color/ash"
             android:textColor="@color/black"
             android:textSize="20dp" />
 
@@ -74,6 +75,7 @@
             android:background="@drawable/general_bg_btn_black"
             android:padding="12dp"
             android:textColor="@color/black"
+            android:textColorHint="@color/ash"
             android:textSize="20dp" />
         <EditText
             android:id="@+id/Password"
@@ -83,6 +85,17 @@
             android:background="@drawable/general_bg_btn_black"
             android:padding="12dp"
             android:textColor="@color/black"
+            android:textColorHint="@color/ash"
+            android:textSize="20dp" />
+        <EditText
+            android:id="@+id/ConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/general_bg_btn_black"
+            android:padding="12dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/ash"
             android:textSize="20dp" />
 
         <androidx.appcompat.widget.Toolbar

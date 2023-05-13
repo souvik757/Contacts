@@ -2,18 +2,21 @@ package com.example.contacts.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.contacts.KEYS;
+import com.example.contacts.MyDialogFragment;
 import com.example.contacts.R;
 import com.example.contacts.UTILS;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,7 +26,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class profiler extends AppCompatActivity {
+public class profiler extends AppCompatActivity implements MyDialogFragment.MyDialogListener {
     // Declaring widgets :::
     private TextView user_id ;
     private TextView user_name ;
@@ -96,9 +99,9 @@ public class profiler extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent edit = new Intent(profiler.this , Edit.class) ;
-                edit.putExtra("USERIDTOEDIT" , user_id.getText().toString().trim()) ;
-                startActivity(edit);
+                MyDialogFragment dialogFragment = new MyDialogFragment();
+                dialogFragment.setListener(profiler.this);
+                dialogFragment.show(getSupportFragmentManager(), "MyDialogFragment");
             }
         });
     }
@@ -123,5 +126,21 @@ public class profiler extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertBox(profiler.this) ;
+    }
+
+    @Override
+    public void onOkButtonClicked(String inputText) {
+        if(inputText.equals(user_password.getText().toString().trim())) {
+            Intent edit = new Intent(profiler.this, Edit.class);
+            edit.putExtra("USERIDTOEDIT", user_id.getText().toString().trim());
+            startActivity(edit);
+        } else if (inputText.equals("")) {
+            Toast.makeText(this, "PROVIDE PASSWORD TO PROCEED !", Toast.LENGTH_SHORT).show();
+        } else{
+            Toast.makeText(this, "PASSWORD NOT MATCHED !", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(()->{
+                finish() ;
+            }, 1400) ;
+        }
     }
 }
